@@ -55,7 +55,7 @@ if (typeof window.getSelection != "undefined") {
 """
 
 def onFindAndReplace(self):
-    """Main function"""
+    """Main function, handle selection"""
     sel_changed = False
     if not self.web.selectedText():
         self.web.eval("document.execCommand('selectAll')")
@@ -64,12 +64,19 @@ def onFindAndReplace(self):
             tooltip("Please enter some text first.")
             return False
     
+    self.findAndReplace()
+
+    if sel_changed:
+        # revert updated selection
+        self.web.eval("window.getSelection().removeAllRanges();")
+        self.web.eval("focusField(%d);" % self.currentField)
+
+
+def findAndReplace(self):
+    """Invoke dialog and perform replacements"""
     dialog = FindAndReplace(self)
     ret = dialog.exec_()
     if not ret:
-        if sel_changed: # revert updated selection
-            self.web.eval("window.getSelection().removeAllRanges();")
-            self.web.eval("focusField(%d);" % self.currentField)
         return False
     
     mode = dialog.mode
@@ -81,6 +88,11 @@ def onFindAndReplace(self):
         nidx = dialog.form.sbNew.value()
         original = "{{c%d::" % oidx
         new = "{{c%d::" % nidx
+
+    if not original or not new or original == new:
+        tooltip("Invalid original and/or replacement.",
+            parent=self.parentWindow)
+        return False
     
     self.web.eval(js_find_replace % (original, new))
     
@@ -95,5 +107,6 @@ def onSetupButtons(self):
         key=HOTKEY)
 
 
+Editor.findAndReplace = findAndReplace
 Editor.onFindAndReplace = onFindAndReplace
 addHook("setupEditorButtons", onSetupButtons)
