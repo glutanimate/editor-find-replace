@@ -8,6 +8,7 @@ This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.an
 
 - [Screenshots](#screenshots)
 - [Installation](#installation)
+- [Documentation](#documentation)
 - [License and Credits](#license-and-credits)
 
 <!-- /MarkdownTOC -->
@@ -29,6 +30,10 @@ This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.an
 3. Download and extract the latest add-on release from the [releases tab](https://github.com/Glutanimate/editor-find-replace/releases)
 4. Move `Find and Replace in Editor.py` and `editor_find_replace` into the add-ons folder
 5. Restart Anki
+
+### Documentation
+
+For further information on the use of this add-on please check out [the original add-on description](docs/description.md).
 
 ### License and Credits
 
